@@ -50,7 +50,6 @@
        PROCEDURE DIVISION.
       */////////////////////////////////////////////////////////////////
        MAIN-PROCEDURE.
-           DISPLAY "INICIO DEL JUEGO DE AZAR"
            PERFORM 1000-CALL-ROUTINE
            PERFORM 2000-ENTER-VALIDATED-NUMBER
            PERFORM 3000-CORRECT-REGULAR-OR-ERROR
@@ -59,6 +58,9 @@
       */////////////////////////////////////////////////////////////////
 
        1000-CALL-ROUTINE.
+           DISPLAY "***************************************************"
+           DISPLAY "*            INICIO DEL JUEGO DE AZAR             *"
+           DISPLAY "***************************************************"
            INITIALIZE AREA-COMUNICACION
            CALL ROUTINE-NAME USING AREA-COMUNICACION
            PERFORM 1100-DECOMPOSE-NUMBER
