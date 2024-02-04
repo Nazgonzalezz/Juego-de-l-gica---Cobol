@@ -10,76 +10,119 @@
        FILE SECTION.
        WORKING-STORAGE SECTION.
 
+       01 MASCARA           PIC XXXX VALUE 'xxxx'.
+       01 EJEMPLO-CAMPO-N   PIC 99 VALUE 0.
+       01 HORARIO           PIC 9(8).
+       01 HORA REDEFINES HORARIO.
+         02 HH              PIC 99.
+         02 HM              PIC 99.
+         02 HS              PIC 99.
+         02 HX              PIC 99.
+       01 NUMERO            PIC 9(6).
 
-         01 WSC-INICIO             PIC  X(15)   VALUE 'PROCESO '.
-         01 WSC-PROCESO            PIC  X(15)   VALUE ' DE NRO ' .
-         01 WSC-FIN                PIC  X(15)   VALUE 'INCOGNITO' .
-         01 WSC-PROGRAMA           PIC  X(08)   VALUE 'EJEAZAR0' .
-         01 MASCARA                PIC  XXXX    VALUE 'xxxx'.
-         01 EJEMPLO-CAMPO-N        PIC  99       VALUE 0.
-         01  HORARIO               PIC 9(8).
-         01  HORA REDEFINES HORARIO.
-              02  HH               PIC 99.
-              02  HM               PIC 99.
-              02  HS               PIC 99.
-               02  HX              PIC 99.
-         01  NUMERO                PIC 9(6).
+       01 CAMPO-AZAR.
+         05 CAMPO-01        PIC 9.
+         05 CAMPO-02        PIC 9.
+         05 CAMPO-03        PIC 9.
+         05 CAMPO-04        PIC 9.
 
+        01 VERIFICA           PIC X.
+          88 VALIDO          VALUE 'T'.
+          88 NOVALIDO        VALUE 'F'.
 
-        01 CAMPO-AZAR.
-           05 CAMPO-01             PIC 99.
-           05 CAMPO-02             PIC 99.
-
-       LINKAGE SECTION.
-        01 AREA-COMUNICACION.
-           05 CAMPO-INCOGNITO      PIC X(4).
-
+        LINKAGE SECTION.
+       01 AREA-COMUNICACION.
+         05 CAMPO-INCOGNITO PIC X(4).
 
        PROCEDURE DIVISION USING AREA-COMUNICACION.
 
        0000-CONTROL.
 
-           PERFORM 1000-INICIO
-
-           PERFORM 2000-PROCESO-CENTRAL
-
-           PERFORM 3000-FINAL.
-
-
+        PERFORM 1000-INICIO
+        PERFORM 2000-PROCESO-CENTRAL
+        PERFORM 3000-FINAL.
 
        1000-INICIO.
 
-           DISPLAY WSC-INICIO  .
-
-
        2000-PROCESO-CENTRAL.
-           DISPLAY WSC-PROCESO
 
-      *      tomando la hora del sistema  obtenemos los 2 1eros digitos
-      *         valor con calculo azaroso
-           ACCEPT HORARIO FROM TIME.
-           COMPUTE NUMERO = (HH * HX) / HM + HS.
+        ACCEPT HORARIO FROM TIME
+       COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
 
+      * DISPLAY NUMERO
 
-           MOVE NUMERO         TO CAMPO-01
+       MOVE NUMERO(5:1) TO CAMPO-01
+       SET NOVALIDO TO TRUE
+       PERFORM 2500-SEGUNDO UNTIL VALIDO
 
-      *      tomando la hora del sistema  obtenemos los 2 sig digitos
-      *         valor con calculo azaroso
+       SET NOVALIDO TO TRUE
+       PERFORM 2600-TERCERO UNTIL VALIDO
 
-           ACCEPT HORARIO FROM TIME.
-           COMPUTE HH =  HH + HX
-           COMPUTE HX = HX + HM
-           COMPUTE HS = HS + HH
-           COMPUTE NUMERO = (HH * HX) / HM + HS.
+       SET NOVALIDO TO TRUE
+       PERFORM 2700-CUARTO UNTIL VALIDO.
 
+      *********************************************
 
-           MOVE NUMERO         TO CAMPO-02
+       2500-SEGUNDO.
 
-           DISPLAY 'DEVUELVE NRO ' MASCARA
-           MOVE    CAMPO-AZAR  TO CAMPO-INCOGNITO .
+       MOVE NUMERO(2:1) TO CAMPO-02
+       IF CAMPO-01 NOT EQUAL CAMPO-02
+         SET VALIDO TO TRUE
+       ELSE
+          ACCEPT HORARIO FROM TIME
+          COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
+          MOVE NUMERO(2:1) TO CAMPO-02
+       END-IF.
+
+      ********************************************
+
+       2600-TERCERO.
+
+        ACCEPT HORARIO FROM TIME.
+       COMPUTE HH =  HH + HX
+       COMPUTE HX = HX + HM
+       COMPUTE HS = HS + HH
+       COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
+
+       MOVE NUMERO(4:1)  TO CAMPO-03
+
+       IF CAMPO-03 NOT EQUAL CAMPO-01 AND
+           CAMPO-03 NOT EQUAL CAMPO-02
+           SET VALIDO TO TRUE
+       ELSE
+        ACCEPT HORARIO FROM TIME
+        COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
+        MOVE NUMERO(4:1) TO CAMPO-03
+       END-IF.
+
+      ******************************************
+
+       2700-CUARTO.
+
+        ACCEPT HORARIO FROM TIME.
+       COMPUTE HH =  HH + HX
+       COMPUTE HX = HX + HM
+       COMPUTE HS = HS + HH
+       COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
+
+       MOVE NUMERO(4:1)  TO CAMPO-04
+
+       IF CAMPO-04 NOT EQUAL CAMPO-01 AND
+          CAMPO-04 NOT EQUAL CAMPO-02 AND
+          CAMPO-04 NOT EQUAL CAMPO-03
+        SET VALIDO TO TRUE
+       ELSE
+        ACCEPT HORARIO FROM TIME
+        COMPUTE NUMERO = (HH * 1000) + (HX * 100) + (HM * 10) + HS
+        MOVE NUMERO(6:1) TO CAMPO-04
+       END-IF.
+
+      ********************************************
 
        3000-FINAL.
-            DISPLAY WSC-FIN WSC-PROGRAMA.
 
+       MOVE CAMPO-AZAR  TO CAMPO-INCOGNITO
+      * DISPLAY CAMPO-INCOGNITO.
+       DISPLAY MASCARA
            GOBACK.
 
