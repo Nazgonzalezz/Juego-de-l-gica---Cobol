@@ -12,8 +12,8 @@
        77  flag                  PIC 9     VALUE 1.
        77  aux                   PIC 9.
        77  ROUTINE-NAME          PIC X(8) VALUE "EJEAZAR0".
-       77  aux2                  PIC 9.
-       77  aux3                  PIC 9999 COMP.
+       77  aux2                  PIC 9999 COMP.
+       
 
        01  NUMBERSS OCCURS 4 TIMES.
            05 NumberEntered      PIC 9 COMP.
@@ -73,10 +73,10 @@
       *-----------------------------------------------------------------
 
        1100-DECOMPOSE-NUMBER.
-           MOVE CAMPO-INCOGNITO to aux3
-           COMPUTE Number-Incog(1) = aux3 / 1000
-           COMPUTE Number-Incog(2)= (aux3 - Number-Incog(1)*1000)/100
-           COMPUTE Number-Incog(3) = (aux3 - Number-Incog(2)*100
+           MOVE CAMPO-INCOGNITO to aux2
+           COMPUTE Number-Incog(1) = aux2 / 1000
+           COMPUTE Number-Incog(2)= (aux2 - Number-Incog(1)*1000)/100
+           COMPUTE Number-Incog(3) = (aux2 - Number-Incog(2)*100
            - Number-Incog(1)*1000) / 10
            COMPUTE Number-Incog(4) = aux3 - (Number-Incog(1) * 1000)
            - (Number-Incog(2) * 100) - (Number-Incog(3) * 10).
