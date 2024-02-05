@@ -1,7 +1,6 @@
       ******************************************************************
-      * Author:GONZALEZ NAZARENA ARACELI
+      * Author:GONZALEZ NAZARENA ARACELI                        
       * Date:02/2024
-      * Purpose:
       * Tectonics: cobc
       ******************************************************************
        IDENTIFICATION DIVISION.
@@ -38,10 +37,13 @@
            05 Titles             PIC X(18) VALUE "NRO INTENTOS: ".
            05  GameAttempts      PIC 9     VALUE 0.
 
-
+       01  TITLE-NUM-INCOG.
+           05 FILLER             PIC X(17) VALUE "(nro secreto:".
+           05 NUMB-INCOG         PIC 9999.
+           05 FILLER             PIC X VALUE ")".
+           
        01  NUMBER-INCOGNITO OCCURS 4 TIMES.
            05 Number-Incog         PIC 9 COMP.
-
 
 
        01 AREA-COMUNICACION.
@@ -64,8 +66,9 @@
            INITIALIZE AREA-COMUNICACION
            CALL ROUTINE-NAME USING AREA-COMUNICACION
            PERFORM 1100-DECOMPOSE-NUMBER
-           DISPLAY "NUMERO INCOGNITO:"
-           DISPLAY CAMPO-INCOGNITO.
+           MOVE CAMPO-INCOGNITO TO NUMB-INCOG
+           DISPLAY TITLE-NUM-INCOG.
+           
 
       *-----------------------------------------------------------------
 
@@ -144,11 +147,11 @@
            PERFORM UNTIL aux > 4
                MOVE 1 TO aux2
                PERFORM UNTIL aux2 > 4
-                   IF NUMBERSS(aux) EQUAL Number-Incog(aux2) 
+                   IF NUMBERSS(aux) EQUAL Number-Incog(aux2)
                    AND  aux = aux2
                        ADD 1 TO CORRECT
                        MOVE 7 TO AUX2
-                   ELSE 
+                   ELSE
                        IF  NUMBERSS(aux) EQUAL Number-Incog(aux2)
                        AND aux NOT EQUAL aux2
                            ADD 1 TO REGULAR
