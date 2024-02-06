@@ -66,8 +66,7 @@
            INITIALIZE AREA-COMUNICACION
            CALL ROUTINE-NAME USING AREA-COMUNICACION
            PERFORM 1100-DECOMPOSE-NUMBER
-           MOVE CAMPO-INCOGNITO TO NUMB-INCOG
-           DISPLAY TITLE-NUM-INCOG.
+           MOVE CAMPO-INCOGNITO TO NUMB-INCOG.
            
 
       *-----------------------------------------------------------------
