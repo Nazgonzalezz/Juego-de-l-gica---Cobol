@@ -38,9 +38,9 @@
            05  GameAttempts      PIC 9     VALUE 0.
 
        01  TITLE-NUM-INCOG.
-           05 FILLER             PIC X(17) VALUE "(nro secreto:".
+           05 FILLER             PIC X(18) VALUE "NRO SECRETO:".
            05 NUMB-INCOG         PIC 9999.
-           05 FILLER             PIC X VALUE ")".
+           
            
        01  NUMBER-INCOGNITO OCCURS 4 TIMES.
            05 Number-Incog         PIC 9 COMP.
@@ -177,7 +177,8 @@
            DISPLAY P-CORRECT
            DISPLAY P-REGULAR
            DISPLAY P-ERROR
-           DISPLAY SHOW-NUMBER-OF-ATTEMPTS.
+           DISPLAY SHOW-NUMBER-OF-ATTEMPTS
+           DISPLAY TITLE-NUM-INCOG.
 
       *-----------------------------------------------------------------
        END PROGRAM EJEAZAR1.
